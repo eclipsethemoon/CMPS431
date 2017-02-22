@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //#include <windows.h>
+#include <unistd.h>
 
 #define os 0
 #define osMemSize 128
@@ -23,10 +24,35 @@ int inputSim(int nSlices);
 int outputSim(int nSlices);
 int waitSigSim(int nSlices);
 
-void main()
+
+int main()
 {
-	printf("Hello TV Land! \n");
-	simpleBatch("jobs.txt");
+	int userChoice;
+
+	do 
+	{
+
+		printf("Please select one of the following action: \n");
+		printf("Press 1 to run simulation program: \n");
+		printf("Press 4 to quit the simulation program: \n");
+		scanf("%d",&userChoice);
+		if(userChoice == 1)
+		{
+			printf("Job is running\n");
+			printf("Hello TV Land! \n");
+			readFile("jobs.txt");
+		}
+		else if(userChoice ==4)
+		{
+			printf("Shutting down .....\n");
+			userChoice =0;
+		}
+		
+	}while(userChoice!=0);
+
+	//cpuSim(10);
+	
+	return 0;
 }
 
 
@@ -46,16 +72,18 @@ void readFile(char *jobFile)
 	}
 	else {
 		printf("Reading File....\n");
-		/* Get number of jobs in file. */
+
+		 //Get number of jobs in file. 
 		fscanf(in, "%d \n", &nJobs);
 		printf("nJobs = %d \n", nJobs);
 
-		/* Get next line. */
+		// Get next line. 
 		fgets(line, 80, in);
-		/* NAME	OWNER	ARRIVAL	MEMORYneeded	cpuIOProfile */
-		printf("line = %s \n", line);
 
-		/* Read jobs. */
+		 //NAME	OWNER	ARRIVAL	MEMORYneeded	cpuIOProfile 
+		//printf("line = %s \n", line);
+
+		 //Read jobs. 
 		for(j=0;j<nJobs;j++) 
 		{
 			fscanf(in, "%s %s %d %d %s \n", jId, owner, &arrival, &memSize, runProfile);
@@ -66,6 +94,10 @@ void readFile(char *jobFile)
 	}
 }
 
+void loadJob(int pID, int memSize, int start)
+{
+
+}
 
 int cpuSim(int nSlices)
 {
@@ -79,7 +111,7 @@ int cpuSim(int nSlices)
 	for(j=0;j<nSlices;j++) {
 		printf("%c", spinMe[j%4]);
 		printf("%c", (char)8);
-		Sleep(100);
+		sleep(100);
 	}
 
 	printf(" ");

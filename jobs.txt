@@ -1,0 +1,12 @@
+10
+NAME	OWNER	ARRIVAL	MEMORYneeded	cpuIOProfile
+p0		me		0		50				13c20i40o12c
+p1		you		8		60				23c10i10o3c
+p2		os		10		20				10c50o2c
+p3		os		15		30				30c30w20c
+p4		me		19		10				10c10o
+p5		you		25		5				10c10o
+p6		bob		30		12				10c10i10o
+p7		ric		32		19				15c10o
+p8		os		40		100				50c50i50o20c
+p9		os		49		35				20c20i12c1i30o
