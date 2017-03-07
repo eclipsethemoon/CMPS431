@@ -1,36 +1,71 @@
-//CMPS 431 Program 1
+/*
+
+
+	CMPS 431 Program 1
+	Simple Batch Simulator
+
+
+	Ngu Hoang
+	Date: 02/23/2017
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
 #include <unistd.h> 
-#include <stdint.h>
 #define os 0
 #define osMemSize 128
 #define userPartition 128
 #define userPartitionSize 256
 
 char memory[384];
-//void *memset(void *str, int c,  n)
-void readFile(char *jobFile);
-//int simpleBatch(char *jobFile);
+//void memset(void *str, int c,  n)
+//void readFile(char *jobFile);
+void simpleBatch(char *jobFile);
 void loadJob(char pId[], int memSize, int start);
-//void clearMemory(int memSize, int start, char c);
-void showMemory(void);
+void clearMemory(int memSize, int start, char* c);
+//void showMemory(void);
 int runJob(char jId[], char *jProfile, int nJobs);
 
 int cpuSim(int nSlices);
 int inputSim(int nSlices);
 int outputSim(int nSlices);
 int waitSigSim(int nSlices);
+int userChoice;
 
 int main(void)
 {
+
+	/*do
+	{
+		printf("Please select the following options:\n");
+		printf("Enter 1 to execute batch os job\n");
+		printf("Enter 0 to exit the program\n");
+		scanf("%i",&userChoice);
+
+		if(userChoice == 1)
+		{
+			
+			
+			break;
+		}
+		else if (userChoice == 0)
+		{
+			break;
+		}
+		else
+		{
+			printf("I don't understand\t \n\n");
+		}			
+	}while(userChoice!=0);*/
 	printf("Hello TV Land! \n");
-	readFile("jobs.txt");
+	simpleBatch("jobs.txt");
 	return 0;
+
 }
 
-void readFile(char *jobFile)
+
+void simpleBatch(char *jobFile)
 {
 	FILE *in;
 	int nJobs, j;
@@ -55,10 +90,11 @@ void readFile(char *jobFile)
 		for(j=0;j<nJobs;j++) {
 			fscanf(in, "%s %s %d %d %s \n", jId, owner, &arrival, &memSize, runProfile);
 			//printf("%s \n",jId);
-			memset(memory,0,sizeof(memory));
+			memset (memory,0,strlen(memory));
 			loadJob(jId,memSize,osMemSize+1);
-			showMemory();
+			//showMemory();
 			runJob(jId,runProfile, nJobs);
+			memset (memory,0,strlen(memory));
 			//printf("jId %s	owner %s	arrival %d	memSize %d	runProfile %s \n", jId, owner, arrival, memSize, runProfile);
 		}
 
@@ -66,10 +102,11 @@ void readFile(char *jobFile)
 	}
 }
 
-/* void loadJob(char pId[], int memSize, int start){
-	printf("Job %s loaded into memory at slot %d and ends on slot %d\n", pId, start, start+memSize);
+
+ void loadJob(char pId[], int memSize, int start){
+	printf("Job %s loaded into memory at %d and ends on %d\n", pId, start, start+memSize);
 	
-} */
+} 
 
 
 int cpuSim(int nSlices)
@@ -79,22 +116,20 @@ int cpuSim(int nSlices)
 	//printf("%d", nSlices);
 	char spinMe[] = "|/-\\";
 
-	printf("cpu ");
-	//printf("test");
+	printf("\ncpu \n");
 	for(j=0;j<nSlices;j++) {
 		printf("%c", spinMe[j%4]);
 		printf("%c", (char)8);
-		sleep(0.3);
+		printf("c ");
+		sleep(0.5);
 	}
-
-	printf(" ");
 
 	for(j=0;j<5;j++) {
 		printf("%c", (char)8);
 		printf(" ");
 		printf("%c", (char)8);
 	}
-	printf("cpu ");
+	
 	usedSlices = nSlices;
 	return usedSlices;
 }
@@ -105,15 +140,14 @@ int inputSim(int nSlices){
 
 	char spinMe[] = "|/-\\";
 
-	printf("input ");
+	printf("\ninput \n");
 
 	for(j=0;j<nSlices;j++) {
 		printf("%c", spinMe[j%4]);
 		printf("%c", (char)8);
-		sleep(0.1);
+		printf("i ");
+		sleep(0.5);
 	}
-
-	printf(" ");
 
 	for(j=0;j<5;j++) {
 		printf("%c", (char)8);
@@ -122,7 +156,6 @@ int inputSim(int nSlices){
 	}
 
 	usedSlices = nSlices;
-
 	return usedSlices;
 }
 int outputSim(int nSlices){
@@ -131,15 +164,14 @@ int outputSim(int nSlices){
 
 	char spinMe[] = "|/-\\";
 
-	printf("output ");
+	printf("\noutput \n");
 
 	for(j=0;j<nSlices;j++) {
 		printf("%c", spinMe[j%4]);
 		printf("%c", (char)8);
+		printf("o ");
 		sleep(0.1);
 	}
-
-	printf(" ");
 
 	for(j=0;j<5;j++) {
 		printf("%c", (char)8);
@@ -152,17 +184,6 @@ int outputSim(int nSlices){
 	return usedSlices;
 }
 
-int simpleBatch(char *jobFile){
-	
-}
-/*
-void clearMemory(int memSize, int start, int c){
-	memset(memSize,start,c);
-}
-*/
-/* void showMemory(void){
-	
-} */
 
 int waitSigSim(int nSlices){
 	int usedSlices = 0;
@@ -170,15 +191,15 @@ int waitSigSim(int nSlices){
 
 	char spinMe[] = "|/-\\";
 
-	printf("output ");
+	//printf("\nwaiting\n ");
 
 	for(j=0;j<nSlices;j++) {
 		printf("%c", spinMe[j%4]);
 		printf("%c", (char)8);
-		//sleep(100);
+		//printf("w ");
+		sleep(0.1);
 	}
 
-	printf(" ");
 
 	for(j=0;j<5;j++) {
 		printf("%c", (char)8);
@@ -199,47 +220,59 @@ int runJob(char jId[], char *jProfile, int nJobs){
 	char *delim = "ciow";
 	char *pChr = strtok (myStr, delim);
 	char *myDelimChar;
-	int CPUt;
-	int iTime,oTime,wTime;
-	int totalIT;
+	int cpuTime =0;
+	int inputTime=0,outputTime=0,waitTime=0;
+	int totalIdleTime=0;
+	int sumIdleTime ;
+	int sumCpuTime ;
 	while (pChr) {
-		//printf ("%s ", pChr);
-		
+	
 		myDelimChar = dup[pChr-myStr+strlen(pChr)];
 		if(myDelimChar == 'c'){
-			CPUt += atoi(pChr);
-			cpuSim(CPUt);
-			//printf("%d ", myInt);
-			//printf("got c ");
+			cpuTime = cpuTime + atoi(pChr);
+			cpuSim(cpuTime);		
 			
 		}
 		else if(myDelimChar == 'i'){
-			iTime += atoi(pChr);
-			inputSim(iTime);
-			//printf("got I ");
+			inputTime = inputTime + atoi(pChr);
+			inputSim(inputTime);
+			
 		}
 		else if(myDelimChar == 'o'){
-			oTime += atoi(pChr);
-			outputSim(oTime);
-			//printf("got O ");
+			outputTime = outputTime + atoi(pChr);
+			outputSim(outputTime);
+			
 		}
 		else if(myDelimChar == 'w'){
-			wTime += atoi(pChr);
-			waitSigSim(wTime);
-			//printf("got W ");
+			waitTime = waitTime + atoi(pChr);
+			waitSigSim(waitTime);
+			
 		}
-		
 		//printf("%c ", myDelimChar);
 		pChr = strtok (NULL, delim);
 		//char delimUsed = dup[pChr-myStr];
 	}
-	totalIT += iTime + oTime + wTime;
-	
-	putchar ('\n');
+	totalIdleTime = inputTime + outputTime + waitTime;
+	sumIdleTime = sumIdleTime + totalIdleTime;
+	sumCpuTime = sumCpuTime + cpuTime;
 
+	printf("\n\nJob id: %s \n",jId);
+	printf("The total idle time is %d \n",sumIdleTime );
+	printf("The total cpu time is %d \n",sumCpuTime);
+	//sumCpuTime =0;
+	//sumIdleTime =0;
 	return 0;
 }
 //	printf("%c \n", myStr);
 
 
 
+
+// void simpleBatch(char *jobFile){
+	
+// }
+/*
+void clearMemory(int memSize, int start, char *c){
+	memset(memSize,start,c);
+}
+ */
